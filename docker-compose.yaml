@@ -1,0 +1,15 @@
+version: '3.4'
+services:
+  spring-security-ms-db:
+    image: postgres
+    ports:
+      - "9009:5432"
+    volumes:
+      - db_data_spring_security-management:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: springsecurity
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: postgres-spring-security
+
+volumes:
+  db_data_spring_security-management: {}

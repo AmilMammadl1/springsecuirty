@@ -27,6 +27,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests()
                 .requestMatchers("/a").permitAll() // Permit all requests to /a regardless of method
+                .requestMatchers("/register").permitAll() // Permit all requests to /a regardless of method
                 .requestMatchers(HttpMethod.GET, "/b").authenticated() // Require authentication for GET requests to /b
                 .requestMatchers(HttpMethod.POST, "/b").authenticated() // Require authentication for POST requests to /b
                 .requestMatchers(HttpMethod.PUT, "/b").authenticated() // Require authentication for PUT requests to /b
@@ -39,21 +40,21 @@ public class SecurityConfig {
     }
 
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User
-                .withUsername("user")
-                .password("{noop}salamavara123")
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User
-                .withUsername("admin")
-                .password("{bcrypt}$2a$16$SLfYyv2uRte9IYnmxENMk.3xrDFt9DsAXCDxCEYdu4pr9rGZX1uf6")
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user,admin);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails user = User
+//                .withUsername("user")
+//                .password("{noop}salamavara123")
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails admin = User
+//                .withUsername("admin")
+//                .password("{bcrypt}$2a$16$SLfYyv2uRte9IYnmxENMk.3xrDFt9DsAXCDxCEYdu4pr9rGZX1uf6")
+//                .roles("ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(user,admin);
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -62,9 +63,9 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public CompromisedPasswordChecker compromisedPasswordChecker(){
-        return new HaveIBeenPwnedRestApiPasswordChecker();
-    }
+//    @Bean
+//    public CompromisedPasswordChecker compromisedPasswordChecker(){
+//        return new HaveIBeenPwnedRestApiPasswordChecker();
+//    }
 
 }
