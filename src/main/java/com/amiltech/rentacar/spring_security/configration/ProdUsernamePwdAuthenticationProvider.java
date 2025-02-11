@@ -25,7 +25,9 @@ public class ProdUsernamePwdAuthenticationProvider implements AuthenticationProv
         String pwd = authentication.getCredentials().toString();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (passwordEncoder.matches(pwd, userDetails.getPassword())) {
-            return new UsernamePasswordAuthenticationToken(username,pwd,userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, pwd, userDetails.getAuthorities());
+            usernamePasswordAuthenticationToken.setAuthenticated(true);
+            return usernamePasswordAuthenticationToken;
         }else {
             throw new BadCredentialsException("Invalid password!");
         }
