@@ -1,7 +1,9 @@
 server:
   port: 8084
-
 spring:
+  config:
+    activate:
+      on-profile: prod
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:9009/postgres-spring-security
@@ -15,7 +17,5 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-#  liquibase:
-#    change-log: db/changelog/db.changelog-master.yml
-#    enabled: true
+  application:
+    name: springsecurity

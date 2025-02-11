@@ -4,30 +4,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 
 @Configuration
-@Profile("!prod")
-public class SecurityConfig {
+@Profile("prod")
+public class SecurityProdConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
 //            authorizationManagerRequestMatcherRegistry.requestMatchers("/a").permitAll();
 //            authorizationManagerRequestMatcherRegistry.requestMatchers("/b").authenticated();
 //        });
-        http.requiresChannel(channelRequestMatcherRegistry -> channelRequestMatcherRegistry.anyRequest().requiresInsecure());
 
+        http.requiresChannel(channelRequestMatcherRegistry -> channelRequestMatcherRegistry.anyRequest().requiresSecure());
         http.authorizeHttpRequests()
                 .requestMatchers("/a").permitAll() // Permit all requests to /a regardless of method
                 .requestMatchers("/register").permitAll() // Permit all requests to /a regardless of method
@@ -36,7 +30,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/b").authenticated() // Require authentication for PUT requests to /b
                 .anyRequest().authenticated(); // Require authentication for any other requests
 
-        http.csrf().disable();
+        http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());
         return http.build();

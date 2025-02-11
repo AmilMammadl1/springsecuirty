@@ -1,5 +1,24 @@
-spring:
+server:
+  port: 8084
 
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:9009/postgres-spring-security
+    password: ${POSTGRES_PASSWORD:123456}
+    username: ${POSTGRES_USER:springsecurity}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: true
+    properties:
+      hibernate:
+        format_sql: true
+  application:
+    name: springsecurity
+
+  config:
+    import: application_prod.yaml
   profiles:
-    include:
-      - db
+    active: default
