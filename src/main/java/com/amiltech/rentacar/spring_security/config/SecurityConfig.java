@@ -26,7 +26,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST,"/a").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET,"/a").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/b").hasRole("USER")
-                                .requestMatchers(HttpMethod.GET,"/b").permitAll()                                .anyRequest().denyAll())
+                                .requestMatchers(HttpMethod.GET,"/b").permitAll()
+                                .anyRequest().authenticated())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(jwtAuthenticationService, UsernamePasswordAuthenticationFilter.class);
         return http.build();
