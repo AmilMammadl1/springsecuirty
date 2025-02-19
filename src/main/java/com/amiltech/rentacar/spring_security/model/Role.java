@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.List;
+
 @Entity
-@Table(name = "_user")
+@Table(name = "_role")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,8 +26,7 @@ public class Role implements GrantedAuthority {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    User user;
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private List<User> users;
 
 }
