@@ -15,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,9 +42,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException("User already exists");
         }
         User userCreate = userMapper.map(user);
-        userCreate.setPassword(passwordEncoder.encode(userCreate.getPassword()));
+        userCreate.setPassword(passwordEncoder.encode(user.password()));
         Role roleUser = roleRepository.findByName("ROLE_USER");
-        userCreate.getRoles().add(roleUser);
+        List<Role> roles = userCreate.getRoles();
+        if(roles == null){
+            roles = new ArrayList<>();
+        }
+        roles.add(roleUser);
+        userCreate.setRoles(roles);
         userRepository.save(userCreate);
 
     }
