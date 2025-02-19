@@ -1,8 +1,10 @@
 package com.amiltech.rentacar.spring_security.model;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,10 +35,23 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private List<Role> roles;
 
     private Boolean status;
 
     private Boolean isActive;
+//
+//    @PrePersist
+//    @PreUpdate
+//    public void init() {
+//        if (roles == null) {
+//            roles = new ArrayList<>();
+//        }
+//    }
 }
