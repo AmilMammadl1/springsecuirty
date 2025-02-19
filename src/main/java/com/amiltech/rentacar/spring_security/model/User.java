@@ -35,4 +35,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
+
+    private Boolean status;
+
+    private Boolean isActive;
 }
