@@ -33,8 +33,7 @@ public class JwtService {
         try {
             Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
             return claims;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Invalid token");
         }
     }
@@ -54,5 +53,13 @@ public class JwtService {
                 .subject(email)
                 .expiration(new Date(System.currentTimeMillis() + jwtTokenTime))
                 .compact();
+    }
+
+    public String generateToken(String email, Map<String, Object> extraClaims) {
+        return generateToken(extraClaims, email);
+    }
+
+    public String generateRefresh(String email, Map<String, Object> extraClaims) {
+        return generateToken(extraClaims, email);
     }
 }
