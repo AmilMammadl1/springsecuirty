@@ -1,0 +1,6 @@
+package com.amiltech.rentacar.spring_security.service;
+
+public interface VerificationService {
+
+
+}

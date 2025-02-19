@@ -46,12 +46,8 @@ public class User {
     private Boolean status;
 
     private Boolean isActive;
-//
-//    @PrePersist
-//    @PreUpdate
-//    public void init() {
-//        if (roles == null) {
-//            roles = new ArrayList<>();
-//        }
-//    }
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Verification> verifications;
+
 }

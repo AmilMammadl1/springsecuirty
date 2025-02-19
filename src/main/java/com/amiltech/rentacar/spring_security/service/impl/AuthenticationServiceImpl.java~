@@ -58,9 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void verifyUser(String token) {
-        User user = verificationService.getUserByValidToken(token);
-        user.setIsActive(true);
-        userRepository.save(user);
+        verificationService.getUserByValidToken(token);
     }
 
     @Override
