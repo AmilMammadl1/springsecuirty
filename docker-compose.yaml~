@@ -1,0 +1,31 @@
+version: '3.4'
+services:
+  spring-security-ms-db:
+    image: postgres
+    ports:
+      - "9009:5432"
+    volumes:
+      - db_data_spring_security-management:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: springsecurity
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: postgres-spring-security
+  kafka-1:
+    image: bitnami/kafka:latest
+    ports:
+      - "9099:9092"
+    environment:
+      - KAFKA_KRAFT_MODE=true
+      - KAFKA_CFG_NODE_ID=1 # Broker ID
+      - KAFKA_KRAFT_CLUSTER_ID=DyZFl62GQIKXyo3ZPSKF5Q # Cluster ID
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9099
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_LISTENER_NAME=PLAINTEXT
+      - KAFKA_CFG_LISTENER_PORT=9092
+      - KAFKA_CFG_LOG_DIRS=/bitnami/kafka/data
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL=PLAINTEXT
+    volumes:
+      - /var/lib/kafka/docker-compose/volumes/server-1:/bitnami/kafka/data
+volumes:
+  db_data_spring_security-management: { }

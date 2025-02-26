@@ -1,7 +1,17 @@
 server:
   port: 8084
-
 spring:
+  kafka:
+    bootstrap-servers: localhost:9099
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer  # Serializer for Long key
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all                # Wait for all replicas to acknowledge
+      retries: 3               # Number of retries in case of a failure
+      batch-size: 16384        # Batch size for sending messages
+      linger-ms: 1             # Delay in milliseconds to send messages in batches
+      buffer-memory: 33554432  # Buffer size for storing unsent records
+
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   security:

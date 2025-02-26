@@ -13,7 +13,7 @@ services:
   kafka-1:
     image: bitnami/kafka:latest
     ports:
-      - "9092:9092"
+      - "9099:9092"
     environment:
       - KAFKA_CFG_NODE_ID=1 #broker id
       - KAFKA_KRAFT_CLUSTER_ID=DyZFl62GQIKXyo3ZPSKF5Q #Cluster id
@@ -25,6 +25,6 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAMES=PLAINTEXT
     volumes:
-      - /Users/kafka/docker-compose/volumes/server-1:/bitnami/kafka
+      - /var/lib/kafka/docker-compose/volumes/server-1:/bitnami/kafkaa
 volumes:
-  db_data_spring_security-management: {}
+  db_data_spring_security-management: { }
