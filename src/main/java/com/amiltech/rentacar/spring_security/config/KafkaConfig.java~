@@ -14,7 +14,7 @@ public class KafkaConfig {
                 .name("user-registered-events-topic")
                 .partitions(3)
                 .replicas(1)
-                .configs(Map.of("retention.ms", "604800000"))
+                .configs(Map.of("min.sync.replicas", "1"))
                 .build();
     }
 }

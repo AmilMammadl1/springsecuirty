@@ -2,7 +2,7 @@ server:
   port: 8084
 spring:
   kafka:
-    bootstrap-servers: localhost:9099
+    bootstrap-servers: localhost:9094
     producer:
       key-serializer: org.apache.kafka.common.serialization.LongSerializer  # Serializer for Long key
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

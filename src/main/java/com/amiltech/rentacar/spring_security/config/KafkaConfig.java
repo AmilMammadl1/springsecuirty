@@ -9,12 +9,11 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
     @Bean
-    NewTopic newTopics() {
+    public NewTopic newTopics() {
         return TopicBuilder
                 .name("user-registered-events-topic")
-                .partitions(3)
-                .replicas(1)
-                .configs(Map.of("min.sync.replicas", "1"))
+                .partitions(3)      // Number of partitions
+                .replicas(1)        // Number of replicas
                 .build();
     }
 }
