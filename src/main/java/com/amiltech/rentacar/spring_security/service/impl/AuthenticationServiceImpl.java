@@ -4,6 +4,7 @@ import com.amiltech.rentacar.spring_security.config.JwtService;
 import com.amiltech.rentacar.spring_security.dto.request.LoginRequestDTO;
 import com.amiltech.rentacar.spring_security.dto.request.UserRequestDTO;
 import com.amiltech.rentacar.spring_security.dto.response.TokenResponseDTO;
+import com.amiltech.rentacar.spring_security.dto.response.UserRegisterDTO;
 import com.amiltech.rentacar.spring_security.mapper.UserMapper;
 import com.amiltech.rentacar.spring_security.model.Role;
 import com.amiltech.rentacar.spring_security.model.User;
@@ -12,6 +13,7 @@ import com.amiltech.rentacar.spring_security.repository.UserRepository;
 import com.amiltech.rentacar.spring_security.service.AuthenticationService;
 import com.amiltech.rentacar.spring_security.service.VerificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final VerificationService verificationService;
-    //    private final KafkaProducer kafkaProducer;
+    private final KafkaTemplate<Long,Object> kafkaTemplate;
     private final JwtService jwtService;
-//    private final HttpServletResponse response;
-//    @Value("${kafka.topic.user-registration}")
-//    private String USER_REGISTRATION_TOPIC;
+    private final String topicName = "user-registered-events-topic";
 
 
     @Override
@@ -52,7 +52,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         roles.add(roleUser);
         userCreate.setRoles(roles);
         userRepository.save(userCreate);
-        verificationService.sendVerificationEmail(userCreate);
+        String verificationToken = verificationService.sendVerificationEmail(userCreate);
+        kafkaTemplate.send(topicName, new UserRegisterDTO(user.email(),user.name(),user.surname(),verificationToken));
+
 
     }
 
